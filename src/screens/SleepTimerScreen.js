@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
-import { useTheme } from '../context/ThemeContext';
-import { useSleep } from '../context/SleepContext';
+import { useThemeContext } from '../context/ThemeContext';
+import { useSleepContext } from '../context/SleepContext';
 import * as Notifications from 'expo-notifications';
 
 const SleepTimerScreen = () => {
-  const { theme } = useTheme();
+  const { theme, getTheme } = useThemeContext();
   const {
     timerDuration,
     isTimerRunning,
@@ -17,7 +17,7 @@ const SleepTimerScreen = () => {
     pauseTimer,
     resetTimer,
     setAlarmSoundPreference,
-  } = useSleep();
+  } = useSleepContext();
 
   // 常用时间选项
   const timeOptions = [15, 30, 45, 60, 90, 120];
@@ -61,21 +61,21 @@ const SleepTimerScreen = () => {
   };
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
+    <ScrollView style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={styles.content}>
         {/* 标题 */}
-        <Text style={[styles.title, { color: theme.textColor }]}>睡眠定时器</Text>
+        <Text style={[styles.title, { color: theme.text }]}>睡眠定时器</Text>
 
         {/* 计时器显示 */}
-        <View style={[styles.timerDisplay, { backgroundColor: theme.cardBackgroundColor }]}>
-          <Text style={[styles.timerText, { color: theme.textColor }]}>
+        <View style={[styles.timerDisplay, { backgroundColor: theme.card }]}>
+          <Text style={[styles.timerText, { color: theme.text }]}>
             {formatTime(remainingTime)}
           </Text>
         </View>
 
         {/* 时间选项 */}
         <View style={styles.timeOptions}>
-          <Text style={[styles.sectionTitle, { color: theme.textColor }]}>选择时间</Text>
+          <Text style={[styles.sectionTitle, { color: theme.text }]}>选择时间</Text>
           <View style={styles.timeButtons}>
             {timeOptions.map((time) => (
               <TouchableOpacity
@@ -84,8 +84,8 @@ const SleepTimerScreen = () => {
                   styles.timeButton,
                   { 
                     backgroundColor: timerDuration === time 
-                      ? theme.primaryColor 
-                      : theme.cardBackgroundColor,
+                      ? theme.primary 
+                      : theme.card,
                   },
                 ]}
                 onPress={() => setTimer(time)}
@@ -97,7 +97,7 @@ const SleepTimerScreen = () => {
                     { 
                       color: timerDuration === time 
                         ? '#FFFFFF' 
-                        : theme.textColor,
+                        : theme.text,
                     },
                   ]}
                 >
@@ -112,14 +112,14 @@ const SleepTimerScreen = () => {
         <View style={styles.controls}>
           {!isTimerRunning ? (
             <TouchableOpacity
-              style={[styles.controlButton, styles.startButton, { backgroundColor: theme.buttonColor }]}
+              style={[styles.controlButton, styles.startButton, { backgroundColor: theme.primary }]}
               onPress={handleStart}
             >
               <Text style={styles.controlButtonText}>开始</Text>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
-              style={[styles.controlButton, styles.pauseButton, { backgroundColor: theme.buttonColor }]}
+              style={[styles.controlButton, styles.pauseButton, { backgroundColor: theme.primary }]}
               onPress={pauseTimer}
             >
               <Text style={styles.controlButtonText}>暂停</Text>
@@ -127,16 +127,16 @@ const SleepTimerScreen = () => {
           )}
 
           <TouchableOpacity
-            style={[styles.controlButton, styles.resetButton, { backgroundColor: theme.cardBackgroundColor }]}
-            onPress={resetTimer}
-          >
-            <Text style={[styles.resetButtonText, { color: theme.textColor }]}>重置</Text>
+              style={[styles.controlButton, styles.resetButton, { backgroundColor: theme.card }]}
+              onPress={resetTimer}
+            >
+            <Text style={[styles.resetButtonText, { color: theme.text }]}>重置</Text>
           </TouchableOpacity>
         </View>
 
         {/* 铃声选择 */}
         <View style={styles.soundOptions}>
-          <Text style={[styles.sectionTitle, { color: theme.textColor }]}>选择铃声</Text>
+          <Text style={[styles.sectionTitle, { color: theme.text }]}>选择铃声</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View style={styles.soundButtons}>
               {soundOptions.map((sound) => (
@@ -145,23 +145,23 @@ const SleepTimerScreen = () => {
                   style={[
                     styles.soundButton,
                     { 
-                      backgroundColor: alarmSound === sound.id 
-                        ? theme.primaryColor 
-                        : theme.cardBackgroundColor,
-                    },
+                    backgroundColor: alarmSound === sound.id 
+                      ? theme.primary 
+                      : theme.card,
+                  },
                   ]}
                   onPress={() => setAlarmSoundPreference(sound.id)}
                 >
                   <Text style={styles.soundEmoji}>{sound.emoji}</Text>
                   <Text
                     style={[
-                      styles.soundName,
-                      { 
-                        color: alarmSound === sound.id 
-                          ? '#FFFFFF' 
-                          : theme.textColor,
-                      },
-                    ]}
+                    styles.soundName,
+                    { 
+                      color: alarmSound === sound.id 
+                        ? '#FFFFFF' 
+                        : theme.text,
+                    },
+                  ]}
                   >
                     {sound.name}
                   </Text>
@@ -186,21 +186,21 @@ const SleepTimerScreen = () => {
         )}
 
         {/* 当前设置信息 */}
-        <View style={[styles.infoPanel, { backgroundColor: theme.cardBackgroundColor }]}>
-          <Text style={[styles.infoTitle, { color: theme.textColor }]}>当前设置</Text>
+        <View style={[styles.infoPanel, { backgroundColor: theme.card }]}>
+          <Text style={[styles.infoTitle, { color: theme.text }]}>当前设置</Text>
           <View style={styles.infoRow}>
-            <Text style={[styles.infoLabel, { color: theme.textColor + '80' }]}>定时时长:</Text>
-            <Text style={[styles.infoValue, { color: theme.textColor }]}>{timerDuration} 分钟</Text>
+            <Text style={[styles.infoLabel, { color: theme.textSecondary }]}>定时时长:</Text>
+            <Text style={[styles.infoValue, { color: theme.text }]}>{timerDuration} 分钟</Text>
           </View>
           <View style={styles.infoRow}>
-            <Text style={[styles.infoLabel, { color: theme.textColor + '80' }]}>状态:</Text>
-            <Text style={[styles.infoValue, { color: theme.textColor }]}>
+            <Text style={[styles.infoLabel, { color: theme.textSecondary }]}>状态:</Text>
+            <Text style={[styles.infoValue, { color: theme.text }]}>
               {isTimerRunning ? '运行中' : '已停止'}
             </Text>
           </View>
           <View style={styles.infoRow}>
-            <Text style={[styles.infoLabel, { color: theme.textColor + '80' }]}>铃声:</Text>
-            <Text style={[styles.infoValue, { color: theme.textColor }]}>
+            <Text style={[styles.infoLabel, { color: theme.textSecondary }]}>铃声:</Text>
+            <Text style={[styles.infoValue, { color: theme.text }]}>
               {soundOptions.find(s => s.id === alarmSound)?.name}
             </Text>
           </View>
@@ -230,13 +230,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 30,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
+    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
     elevation: 5,
   },
   timerText: {

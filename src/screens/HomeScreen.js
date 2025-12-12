@@ -4,11 +4,11 @@ import { useThemeContext } from '../context/ThemeContext';
 import { useModeContext, MODE_TRADITIONAL, MODE_CUSTOM, MODE_ROTATING, MODE_CARD_GRAB } from '../context/ModeContext';
 
 const HomeScreen = ({ navigation }) => {
-  const { getTheme } = useThemeContext();
-  const { 
-    currentMode, 
-    toggleMode, 
-    rotationDirection, 
+  const { theme, getTheme } = useThemeContext();
+  const {
+    currentMode,
+    toggleMode,
+    rotationDirection,
     toggleRotationDirection,
     customMenuItems,
     hiddenMenuItems,
@@ -17,8 +17,6 @@ const HomeScreen = ({ navigation }) => {
     selectedCard,
     setSelectedCardId
   } = useModeContext();
-  
-  const theme = getTheme().colors;
   const [menuItems] = useState([
     {
       id: 'timer',

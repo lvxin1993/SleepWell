@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { useTheme } from '../context/ThemeContext';
+import { useThemeContext } from '../context/ThemeContext';
 
 const StatisticsScreen = () => {
-  const { theme } = useTheme();
+  const { theme } = useThemeContext();
 
   // 模拟睡眠统计数据
   const stats = {
@@ -15,40 +15,40 @@ const StatisticsScreen = () => {
   };
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
-      <Text style={[styles.title, { color: theme.textColor }]}>睡眠统计</Text>
+    <ScrollView style={[styles.container, { backgroundColor: theme.background }]}>
+      <Text style={[styles.title, { color: theme.text }]}>睡眠统计</Text>
       
       <View style={styles.statsContainer}>
-        <View style={[styles.statCard, { backgroundColor: theme.cardBackgroundColor }]}>
-          <Text style={[styles.statValue, { color: theme.textColor }]}>{stats.totalSleepDays}</Text>
-          <Text style={[styles.statLabel, { color: theme.textColor + '80' }]}>总睡眠天数</Text>
+        <View style={[styles.statCard, { backgroundColor: theme.card }]}>
+          <Text style={[styles.statValue, { color: theme.text }]}>{stats.totalSleepDays}</Text>
+          <Text style={[styles.statLabel, { color: theme.textSecondary }]}>总睡眠天数</Text>
         </View>
         
-        <View style={[styles.statCard, { backgroundColor: theme.cardBackgroundColor }]}>
-          <Text style={[styles.statValue, { color: theme.textColor }]}>{stats.averageSleepTime}</Text>
-          <Text style={[styles.statLabel, { color: theme.textColor + '80' }]}>平均睡眠时间</Text>
+        <View style={[styles.statCard, { backgroundColor: theme.card }]}>
+          <Text style={[styles.statValue, { color: theme.text }]}>{stats.averageSleepTime}</Text>
+          <Text style={[styles.statLabel, { color: theme.textSecondary }]}>平均睡眠时间</Text>
         </View>
         
-        <View style={[styles.statCard, { backgroundColor: theme.cardBackgroundColor }]}>
-          <Text style={[styles.statValue, { color: theme.textColor }]}>{stats.bestStreak}</Text>
-          <Text style={[styles.statLabel, { color: theme.textColor + '80' }]}>最佳连续睡眠</Text>
+        <View style={[styles.statCard, { backgroundColor: theme.card }]}>
+          <Text style={[styles.statValue, { color: theme.text }]}>{stats.bestStreak}</Text>
+          <Text style={[styles.statLabel, { color: theme.textSecondary }]}>最佳连续睡眠</Text>
         </View>
         
-        <View style={[styles.statCard, { backgroundColor: theme.cardBackgroundColor }]}>
-          <Text style={[styles.statValue, { color: theme.textColor }]}>{stats.thisWeekAverage}</Text>
-          <Text style={[styles.statLabel, { color: theme.textColor + '80' }]}>本周平均</Text>
+        <View style={[styles.statCard, { backgroundColor: theme.card }]}>
+          <Text style={[styles.statValue, { color: theme.text }]}>{stats.thisWeekAverage}</Text>
+          <Text style={[styles.statLabel, { color: theme.textSecondary }]}>本周平均</Text>
         </View>
         
-        <View style={[styles.statCard, { backgroundColor: theme.cardBackgroundColor }]}>
-          <Text style={[styles.statValue, { color: theme.textColor }]}>{stats.deepSleepPercentage}</Text>
-          <Text style={[styles.statLabel, { color: theme.textColor + '80' }]}>深度睡眠比例</Text>
+        <View style={[styles.statCard, { backgroundColor: theme.card }]}>
+          <Text style={[styles.statValue, { color: theme.text }]}>{stats.deepSleepPercentage}</Text>
+          <Text style={[styles.statLabel, { color: theme.textSecondary }]}>深度睡眠比例</Text>
         </View>
       </View>
       
-      <View style={[styles.chartContainer, { backgroundColor: theme.cardBackgroundColor }]}>
-        <Text style={[styles.chartTitle, { color: theme.textColor }]}>最近7天睡眠趋势</Text>
+      <View style={[styles.chartContainer, { backgroundColor: theme.card }]}>
+        <Text style={[styles.chartTitle, { color: theme.text }]}>最近7天睡眠趋势</Text>
         <View style={styles.chartPlaceholder}>
-          <Text style={{ color: theme.textColor + '60' }}>📊 睡眠趋势图表</Text>
+          <Text style={{ color: theme.textSecondary }}>📊 睡眠趋势图表</Text>
         </View>
       </View>
     </ScrollView>

@@ -18,13 +18,17 @@ import { ModeContextProvider } from './src/context/ModeContext';
 
 const Stack = createStackNavigator();
 
+
+
 export default function App() {
   return (
     <SafeAreaProvider>
       <ThemeContextProvider>
         <ModeContextProvider>
           <SleepContextProvider>
-            <NavigationContainer>
+            <NavigationContainer
+              // 移除自定义主题，让React Navigation使用默认主题
+            >
               <Stack.Navigator initialRouteName="Home">
                 <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'SleepWell' }} />
                 <Stack.Screen name="SleepTimer" component={SleepTimerScreen} options={{ title: '睡眠定时器' }} />

@@ -1,15 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useTheme } from '../context/ThemeContext';
+import { useThemeContext } from '../context/ThemeContext';
 
 const CommunityScreen = () => {
-  const { theme } = useTheme();
+  const { theme } = useThemeContext();
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
-      <Text style={[styles.title, { color: theme.textColor }]}>社区运动</Text>
-      <View style={[styles.content, { backgroundColor: theme.cardBackgroundColor }]}>
-        <Text style={[styles.description, { color: theme.textColor }]}>社区功能开发中...</Text>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <Text style={[styles.title, { color: theme.text }]}>社区运动</Text>
+      <View style={[styles.content, { backgroundColor: theme.card }]}>
+        <Text style={[styles.description, { color: theme.text }]}>社区功能开发中...</Text>
       </View>
     </View>
   );

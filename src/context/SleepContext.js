@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import * as Notifications from 'expo-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 
 const SleepContext = createContext();
 
@@ -17,6 +18,12 @@ export const SleepContextProvider = ({ children }) => {
   // 配置通知处理
   useEffect(() => {
     const configureNotifications = async () => {
+      // 在web平台上不配置通知
+      if (Platform.OS === 'web') {
+        setNotificationPermission('granted'); // web上模拟授权状态
+        return;
+      }
+      
       // 请求通知权限
       const { status: existingStatus } = await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
@@ -71,15 +78,19 @@ export const SleepContextProvider = ({ children }) => {
   // 计时器完成处理
   const handleTimerComplete = async () => {
     setIsTimerRunning(false);
-    // 发送通知
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: '睡眠提醒',
-        body: '时间到了，该睡觉了！',
-        sound: alarmSound,
-      },
-      trigger: null, // 立即发送
-    });
+    
+    // 在web平台上不发送通知
+    if (Platform.OS !== 'web') {
+      // 发送通知
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: '睡眠提醒',
+          body: '时间到了，该睡觉了！',
+          sound: alarmSound,
+        },
+        trigger: null, // 立即发送
+      });
+    }
     
     // 播放选择的铃声
     try {

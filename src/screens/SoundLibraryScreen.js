@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { useTheme } from '../context/ThemeContext';
+import { useThemeContext } from '../context/ThemeContext';
 import { Audio } from 'expo-av';
 
 const SoundLibraryScreen = () => {
-  const { theme } = useTheme();
+  const { theme } = useThemeContext();
   const [playingSound, setPlayingSound] = useState(null);
   const [soundInstance, setSoundInstance] = useState(null);
 
@@ -113,14 +113,14 @@ const SoundLibraryScreen = () => {
   }, [soundInstance]);
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
-      <Text style={[styles.title, { color: theme.textColor }]}>助眠声音库</Text>
+    <ScrollView style={[styles.container, { backgroundColor: theme.background }]}>
+      <Text style={[styles.title, { color: theme.text }]}>助眠声音库</Text>
       
       <View style={styles.soundsContainer}>
         {sounds.map((sound) => (
           <TouchableOpacity
             key={sound.id}
-            style={[styles.soundCard, { backgroundColor: theme.cardBackgroundColor }]}
+            style={[styles.soundCard, { backgroundColor: theme.card }]}
             onPress={() => toggleSound(sound)}
           >
             <View style={styles.soundThumbnail}>
@@ -132,9 +132,9 @@ const SoundLibraryScreen = () => {
               )}
             </View>
             <View style={styles.soundInfo}>
-              <Text style={[styles.soundTitle, { color: theme.textColor }]}>{sound.title}</Text>
-              <Text style={[styles.soundCategory, { color: theme.textColor + '80' }]}>{sound.category}</Text>
-              <Text style={[styles.soundDuration, { color: theme.textColor + '60' }]}>{sound.duration}</Text>
+              <Text style={[styles.soundTitle, { color: theme.text }]}>{sound.title}</Text>
+              <Text style={[styles.soundCategory, { color: theme.textSecondary }]}>{sound.category}</Text>
+              <Text style={[styles.soundDuration, { color: theme.textSecondary }]}>{sound.duration}</Text>
             </View>
             <View style={styles.playButton}>
               <Text style={styles.playButtonEmoji}>

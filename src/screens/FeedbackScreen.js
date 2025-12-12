@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
-import { useTheme } from '../context/ThemeContext';
+import { useThemeContext } from '../context/ThemeContext';
 
 const FeedbackScreen = () => {
-  const { theme } = useTheme();
+  const { theme } = useThemeContext();
   const [feedback, setFeedback] = useState('');
   const [contactMethod, setContactMethod] = useState('wechat');
 
@@ -22,10 +22,10 @@ const FeedbackScreen = () => {
   };
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
+    <ScrollView style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={styles.header}>
-        <Text style={[styles.title, { color: theme.textColor }]}>反馈意见</Text>
-        <Text style={[styles.subtitle, { color: theme.textColor }]}>请告诉我们您的想法和建议</Text>
+        <Text style={[styles.title, { color: theme.text }]}>反馈意见</Text>
+        <Text style={[styles.subtitle, { color: theme.text }]}>请告诉我们您的想法和建议</Text>
       </View>
 
       <View style={styles.form}>

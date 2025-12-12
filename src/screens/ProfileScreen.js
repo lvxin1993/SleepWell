@@ -1,57 +1,58 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { useTheme } from '../context/ThemeContext';
-import { useSleep } from '../context/SleepContext';
+import { useThemeContext } from '../context/ThemeContext';
+import { useSleepContext } from '../context/SleepContext';
 
 const ProfileScreen = () => {
-  const { theme, toggleTheme, isDarkMode } = useTheme();
-  const { notificationPermission } = useSleep();
+  const { theme, toggleTheme, currentTheme } = useThemeContext();
+  const isDarkMode = currentTheme === 'dark';
+  const { notificationPermission } = useSleepContext();
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
+    <ScrollView style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={styles.header}>
-        <Text style={[styles.title, { color: theme.textColor }]}>个人中心</Text>
-        <View style={[styles.avatar, { backgroundColor: theme.primaryColor }]}>
+        <Text style={[styles.title, { color: theme.text }]}>个人中心</Text>
+        <View style={[styles.avatar, { backgroundColor: theme.primary }]}>
           <Text style={styles.avatarText}>👤</Text>
         </View>
       </View>
       
       <View style={styles.infoSection}>
-        <Text style={[styles.sectionTitle, { color: theme.textColor }]}>账户信息</Text>
-        <View style={[styles.infoItem, { backgroundColor: theme.cardBackgroundColor }]}>
-          <Text style={[styles.infoLabel, { color: theme.textColor + '80' }]}>用户名</Text>
-          <Text style={[styles.infoValue, { color: theme.textColor }]}>SleepWell用户</Text>
+        <Text style={[styles.sectionTitle, { color: theme.text }]}>账户信息</Text>
+        <View style={[styles.infoItem, { backgroundColor: theme.card }]}>
+          <Text style={[styles.infoLabel, { color: theme.textSecondary }]}>用户名</Text>
+          <Text style={[styles.infoValue, { color: theme.text }]}>SleepWell用户</Text>
         </View>
-        <View style={[styles.infoItem, { backgroundColor: theme.cardBackgroundColor }]}>
-          <Text style={[styles.infoLabel, { color: theme.textColor + '80' }]}>会员状态</Text>
+        <View style={[styles.infoItem, { backgroundColor: theme.card }]}>
+          <Text style={[styles.infoLabel, { color: theme.textSecondary }]}>会员状态</Text>
           <Text style={[styles.infoValue, { color: '#4CAF50' }]}>普通会员</Text>
         </View>
-        <View style={[styles.infoItem, { backgroundColor: theme.cardBackgroundColor }]}>
-          <Text style={[styles.infoLabel, { color: theme.textColor + '80' }]}>积分</Text>
-          <Text style={[styles.infoValue, { color: theme.textColor }]}>1250</Text>
+        <View style={[styles.infoItem, { backgroundColor: theme.card }]}>
+          <Text style={[styles.infoLabel, { color: theme.textSecondary }]}>积分</Text>
+          <Text style={[styles.infoValue, { color: theme.text }]}>1250</Text>
         </View>
       </View>
       
       <View style={styles.settingsSection}>
-        <Text style={[styles.sectionTitle, { color: theme.textColor }]}>设置</Text>
+        <Text style={[styles.sectionTitle, { color: theme.text }]}>设置</Text>
         
         <TouchableOpacity 
-          style={[styles.settingItem, { backgroundColor: theme.cardBackgroundColor }]}
+          style={[styles.settingItem, { backgroundColor: theme.card }]}
           onPress={toggleTheme}
         >
           <View style={styles.settingInfo}>
-            <Text style={[styles.settingLabel, { color: theme.textColor }]}>深色模式</Text>
-            <Text style={[styles.settingDescription, { color: theme.textColor + '60' }]}>
+            <Text style={[styles.settingLabel, { color: theme.text }]}>深色模式</Text>
+            <Text style={[styles.settingDescription, { color: theme.textSecondary }]}>
               {isDarkMode ? '已开启' : '已关闭'}
             </Text>
           </View>
           <Text style={styles.settingIcon}>{isDarkMode ? '🌙' : '☀️'}</Text>
         </TouchableOpacity>
         
-        <View style={[styles.settingItem, { backgroundColor: theme.cardBackgroundColor }]}>
+        <View style={[styles.settingItem, { backgroundColor: theme.card }]}>
           <View style={styles.settingInfo}>
-            <Text style={[styles.settingLabel, { color: theme.textColor }]}>通知权限</Text>
-            <Text style={[styles.settingDescription, { color: theme.textColor + '60' }]}>
+            <Text style={[styles.settingLabel, { color: theme.text }]}>通知权限</Text>
+            <Text style={[styles.settingDescription, { color: theme.textSecondary }]}>
               {notificationPermission === 'granted' ? '已开启' : '已关闭'}
             </Text>
           </View>
@@ -60,18 +61,18 @@ const ProfileScreen = () => {
           </Text>
         </View>
         
-        <TouchableOpacity style={[styles.settingItem, { backgroundColor: theme.cardBackgroundColor }]}>
+        <TouchableOpacity style={[styles.settingItem, { backgroundColor: theme.card }]}>
           <View style={styles.settingInfo}>
-            <Text style={[styles.settingLabel, { color: theme.textColor }]}>关于我们</Text>
-            <Text style={[styles.settingDescription, { color: theme.textColor + '60' }]}>版本 1.0.0</Text>
+            <Text style={[styles.settingLabel, { color: theme.text }]}>关于我们</Text>
+            <Text style={[styles.settingDescription, { color: theme.textSecondary }]}>版本 1.0.0</Text>
           </View>
           <Text style={styles.settingIcon}>ℹ️</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity style={[styles.settingItem, { backgroundColor: theme.cardBackgroundColor }]}>
+        <TouchableOpacity style={[styles.settingItem, { backgroundColor: theme.card }]}>
           <View style={styles.settingInfo}>
-            <Text style={[styles.settingLabel, { color: theme.textColor }]}>帮助与反馈</Text>
-            <Text style={[styles.settingDescription, { color: theme.textColor + '60' }]}>获取帮助或反馈问题</Text>
+            <Text style={[styles.settingLabel, { color: theme.text }]}>帮助与反馈</Text>
+            <Text style={[styles.settingDescription, { color: theme.textSecondary }]}>获取帮助或反馈问题</Text>
           </View>
           <Text style={styles.settingIcon}>❓</Text>
         </TouchableOpacity>
