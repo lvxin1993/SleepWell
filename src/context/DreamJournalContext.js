@@ -302,19 +302,20 @@ export const DreamJournalContextProvider = ({ children }) => {
         throw new Error('梦境条目不存在');
       }
 
+      const combinedContent = `${entry.title ? entry.title + '\n' : ''}${entry.content}`;
       let analysisResult;
       let analysisMethod = 'local';
 
       // 优先尝试MIMO API
       try {
-        analysisResult = await analyzeDreamWithMIMO(entry.content);
+        analysisResult = await analyzeDreamWithMIMO(combinedContent);
         analysisMethod = 'mimo';
       } catch (mimoError) {
         console.log('MIMO API分析失败，尝试DeepSeek API:', mimoError.message);
         // MIMO API失败，尝试DeepSeek API
         try {
           if (canUseDeepSeekApi()) {
-            analysisResult = await analyzeDreamWithDeepSeek(entry.content);
+            analysisResult = await analyzeDreamWithDeepSeek(combinedContent);
             analysisMethod = 'deepseek';
           } else {
             throw new Error('DeepSeek API调用次数已达上限');
@@ -322,7 +323,7 @@ export const DreamJournalContextProvider = ({ children }) => {
         } catch (deepseekError) {
           console.log('DeepSeek API分析失败，使用本地分析:', deepseekError.message);
           // 所有API都失败，使用本地分析
-          analysisResult = analyzeDreamLocally(entry.content);
+          analysisResult = analyzeDreamLocally(combinedContent);
           analysisMethod = 'local';
         }
       }

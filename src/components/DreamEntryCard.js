@@ -3,18 +3,14 @@ import { View, Text, StyleSheet, TouchableOpacity, Animated, PanResponder, Dimen
 import { useThemeContext } from '../context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 
-const { width } = Dimensions.get('window');
-// 计算卡片大小，确保屏幕内有4个卡片
-const SPACING = 8;
-const CARD_WIDTH = (width - 32 - SPACING * 5) / 4;
-const CARD_HEIGHT = 150;
+const CARD_HEIGHT = 120;
 const MAX_ROTATION = 15;
 const MAX_TRANSLATE = 8;
 
 const DreamEntryCard = ({ item, onDetail, onAnalyze, onDelete, index }) => {
   const { theme } = useThemeContext();
-  // 固定卡片尺寸，确保屏幕内有4个卡片
-  const cardDimensions = { width: CARD_WIDTH, height: CARD_HEIGHT };
+  // 卡片尺寸：铺满列表宽度，高度更紧凑
+  const cardDimensions = { width: '100%', height: CARD_HEIGHT };
 
   const fadeAnim = useRef(new Animated.Value(0)).current; 
   const slideAnim = useRef(new Animated.Value(20)).current;
@@ -118,9 +114,26 @@ const DreamEntryCard = ({ item, onDetail, onAnalyze, onDelete, index }) => {
       {...panResponder.panHandlers}
     >
       <TouchableOpacity onPress={onDetail} activeOpacity={0.7}>
-        <Text style={[styles.entryTitle, { color: theme.text }]}>{item.title}</Text>
-        <Text style={[styles.entryDate, { color: theme.textSecondary }]}>{new Date(item.createdAt).toLocaleString()}</Text>
-        <Text style={[styles.entryContent, { color: theme.textSecondary }]} numberOfLines={3}>{item.content}</Text>
+        <View style={styles.headerRow}>
+          <Text style={[styles.entryTitle, { color: theme.text }]} numberOfLines={1}>{item.title}</Text>
+          <Text style={[styles.entryDateInline, { color: theme.textSecondary }]} numberOfLines={1}>
+            {new Date(item.createdAt).toLocaleString()}
+          </Text>
+          {!!item.dreamType && (
+            <View style={[styles.badge, { borderColor: theme.primary }]}>
+              <Text style={[styles.badgeText, { color: theme.primary }]}>{item.dreamType}</Text>
+            </View>
+          )}
+        </View>
+        <Text style={[styles.entryContent, { color: theme.textSecondary }]} numberOfLines={2}>{item.content}</Text>
+        {!!item.scientificReport && (
+          <View style={styles.analysisRow}>
+            <Ionicons name="sparkles-outline" size={14} color={theme.secondary} style={{ marginRight: 4 }} />
+            <Text style={[styles.analysisSnippet, { color: theme.textSecondary }]} numberOfLines={1}>
+              {item.scientificReport.replace(/\s+/g, ' ').slice(0, 80)}
+            </Text>
+          </View>
+        )}
       </TouchableOpacity>
       
       {/* 终极修复：使用 flex 均分空间 */}
@@ -146,19 +159,21 @@ const styles = StyleSheet.create({
   entryCard: {
     borderRadius: 12,
     padding: 12,
-    marginRight: SPACING,
-    marginBottom: 16,
+    marginBottom: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    width: CARD_WIDTH,
+    width: '100%',
     height: CARD_HEIGHT,
   },
-  entryTitle: { fontSize: 14, fontWeight: 'bold', marginBottom: 4 },
-  entryDate: { fontSize: 10, marginBottom: 6 },
+  entryTitle: { fontSize: 14, fontWeight: 'bold' },
+  headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 },
+  entryDateInline: { fontSize: 10, marginLeft: 8 },
   entryContent: { fontSize: 12, lineHeight: 16 },
+  analysisRow: { flexDirection: 'row', alignItems: 'center', marginTop: 6 },
+  analysisSnippet: { fontSize: 11, lineHeight: 14 },
   entryActions: { 
       flexDirection: 'row', 
       justifyContent: 'space-between', // 确保两端对齐
@@ -174,6 +189,8 @@ const styles = StyleSheet.create({
       alignItems: 'center' 
     },
   actionButtonText: { fontSize: 12, fontWeight: '500' },
+  badge: { borderWidth: 1, borderRadius: 8, paddingHorizontal: 6, paddingVertical: 2, marginLeft: 8 },
+  badgeText: { fontSize: 10, fontWeight: '600' },
 });
 
 export default DreamEntryCard;

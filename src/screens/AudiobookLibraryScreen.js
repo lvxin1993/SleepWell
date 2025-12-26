@@ -1,7 +1,9 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Dimensions, ScrollView } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { useThemeContext } from '../context/ThemeContext';
 import { audiobooks, CATEGORIES } from '../data/audiobooks';
+import { getDownloadedBooks } from '../services/NovelService';
 import { Ionicons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
@@ -12,13 +14,24 @@ const ITEM_WIDTH = (width - ITEM_MARGIN * (NUM_COLUMNS + 1)) / NUM_COLUMNS;
 const AudiobookLibraryScreen = ({ navigation }) => {
   const { theme } = useThemeContext();
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [downloadedBooks, setDownloadedBooks] = useState([]);
+
+  useFocusEffect(
+    useCallback(() => {
+        getDownloadedBooks().then(setDownloadedBooks);
+    }, [])
+  );
+
+  const allBooks = useMemo(() => {
+      return [...downloadedBooks, ...audiobooks];
+  }, [downloadedBooks]);
 
   const filteredAudiobooks = useMemo(() => {
     if (selectedCategory === 'All') {
-      return audiobooks;
+      return allBooks;
     }
-    return audiobooks.filter(book => book.category === selectedCategory);
-  }, [selectedCategory]);
+    return allBooks.filter(book => book.category === selectedCategory);
+  }, [selectedCategory, allBooks]);
 
   const renderCategoryFilter = () => {
     const categories = ['All', ...Object.values(CATEGORIES)];
@@ -62,9 +75,14 @@ const AudiobookLibraryScreen = ({ navigation }) => {
                 <Ionicons name="home-outline" size={26} color={theme.text} />
             </TouchableOpacity>
             <Text style={[styles.headerTitle, { color: theme.text }]}>有声书库</Text>
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.headerButton}>
-                <Ionicons name="arrow-back" size={28} color={theme.text} />
-            </TouchableOpacity>
+            <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity onPress={() => navigation.navigate('NovelSearch')} style={[styles.headerButton, {marginRight: 10}]}>
+                    <Ionicons name="search" size={26} color={theme.text} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.headerButton}>
+                    <Ionicons name="arrow-back" size={28} color={theme.text} />
+                </TouchableOpacity>
+            </View>
         </View>
         {renderCategoryFilter()}
         <FlatList
